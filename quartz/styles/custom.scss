@@ -78,7 +78,7 @@ h1, h2, h3, h4 {
 .callout[data-callout="char-skill"] {
   position: relative;
   overflow: visible !important;
-  margin: 2rem 0 1.2rem 0 !important;
+  margin: 2rem 0 1.2rem 0;
   padding: 0.8rem 1.2rem !important;
   border: 1px solid var(--fu-border) !important;
   background-color: var(--fu-bg-soft) !important;
@@ -320,7 +320,7 @@ body[user-color-scheme="dark"] .content table td {
   border: 2px solid var(--fu-border) !important;
   background-color: var(--fu-bg-soft) !important;
   padding: 0 !important; // 移除内边距，让表格撑满边框
-  margin: 2rem 0 !important;
+  margin: 2rem 0;
   overflow: hidden;
 
   // --- 彻底移除标题行 ---
@@ -388,4 +388,20 @@ body[user-color-scheme="light"] .callout[data-callout="character"] {
   thead tr, tbody tr:nth-child(2) {
     background-color: #333333 !important; // 亮色模式下稍微柔和一点的深色
   }
+}
+
+article .callout + .callout {
+  margin-top: 0rem !important; 
+  
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+article .callout:has(+ .callout) {
+  margin-bottom: 0 !important;
+  
+  border-bottom: none !important;
+  
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
