@@ -1,0 +1,49 @@
+name: Quartz CI/CD
+
+on:
+  push:
+    branches:
+      - v4  
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Quartz
+        run: npx quartz build
+
+      - name: Sync to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # 将生成的 public 文件夹同步到服务器
+          source: "public/"
+          target: "/var/www/quartz/"
+          strip_components: 0 # 保持目录结构为 /var/www/quartz/public
+
+      - name: Reset Permissions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 确保 Nginx 有权读取新同步的文件
+            chown -R www-data:www-data /var/www/quartz/public
+            chmod -R 755 /var/www/quartz/public
