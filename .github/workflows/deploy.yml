@@ -26,17 +26,15 @@ jobs:
       - name: Build Quartz
         run: npx quartz build
 
-      - name: Sync to Server
-        uses: appleboy/scp-action@master
+      - name: Sync to Server via rsync
+        uses: Burnett01/rsync-deployments@5.2.1
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # 将生成的 public 文件夹同步到服务器
-          rm: true
-          source: "public/"
-          target: "/var/www/quartz/"
-          strip_components: 0 # 保持目录结构为 /var/www/quartz/public
+          switches: -avzr --delete  # -a 归档模式, -v 详细, -z 压缩, -r 递归, --delete 删除目标目录中多余文件
+          path: public/
+          remote_path: /var/www/quartz/public/ # 注意：这里直接同步到 public 内部
+          remote_host: ${{ secrets.REMOTE_HOST }}
+          remote_user: ${{ secrets.REMOTE_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Reset Permissions
         uses: appleboy/ssh-action@master
@@ -45,6 +43,6 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # 确保 Nginx 有权读取新同步的文件
-            chown -R www-data:www-data /var/www/quartz/public
-            chmod -R 755 /var/www/quartz/public
+            # 使用 sudo 确保 Nginx 权限，因为同步过去的文件属主是 devuser
+            sudo chown -R www-data:www-data /var/www/quartz/public
+            sudo chmod -R 755 /var/www/quartz/public
