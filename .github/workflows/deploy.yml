@@ -33,6 +33,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           # 将生成的 public 文件夹同步到服务器
+          rm: true
           source: "public/"
           target: "/var/www/quartz/"
           strip_components: 0 # 保持目录结构为 /var/www/quartz/public
