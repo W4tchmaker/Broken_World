@@ -1,20 +1,20 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
-// components shared across all pages
+// 所有页面共享的组件（页脚、头部等）
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
   afterBody: [],
   footer: Component.Footer({
     links: {
-      GitHub: "https://github.com/jackyzha0/quartz",
-      "Discord Community": "https://discord.gg/cRFFHYye7t",
+      "最终物语 Wiki": "https://your-site.com", // 替换为你的地址
+      "Discord": "https://discord.gg/cRFFHYye7t",
     },
   }),
 }
 
-// components for pages that display a single page (e.g. a single note)
+// 单个笔记页面的布局
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
     Component.ConditionalRender({
@@ -22,7 +22,7 @@ export const defaultContentPageLayout: PageLayout = {
       condition: (page) => page.fileData.slug !== "index",
     }),
     Component.ArticleTitle(),
-    Component.ContentMeta(),
+    // Component.ContentMeta(), // <--- 已移除：不再显示日期和阅读时间
     Component.TagList(),
   ],
   left: [
@@ -38,7 +38,11 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      title: "大地图导航", // 侧边栏标题
+      folderClickBehavior: "collapse", // 点击文件夹时折叠/展开，而不是跳转
+      folderDefaultState: "collapsed", // 默认折叠，保持界面清爽
+    }),
   ],
   right: [
     Component.Graph(),
@@ -47,9 +51,13 @@ export const defaultContentPageLayout: PageLayout = {
   ],
 }
 
-// components for pages that display lists of pages  (e.g. tags or folders)
+// 文件夹列表页面的布局（ListPage）
 export const defaultListPageLayout: PageLayout = {
-  beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
+  beforeBody: [
+    Component.Breadcrumbs(), 
+    Component.ArticleTitle(), 
+    // Component.ContentMeta() // <--- 已移除：不再显示日期和阅读时间
+  ],
   left: [
     Component.PageTitle(),
     Component.MobileOnly(Component.Spacer()),

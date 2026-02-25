@@ -149,3 +149,7 @@ h1, h2, h3, h4 {
     strong { color: var(--fu-gold); border: none; background: transparent; }
   }
 }
+
+.section-summary .meta {
+  display: none;
+}
