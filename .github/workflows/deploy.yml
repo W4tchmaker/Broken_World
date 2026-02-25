@@ -44,5 +44,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # 使用 sudo 确保 Nginx 权限，因为同步过去的文件属主是 devuser
-            sudo chown -R www-data:www-data /var/www/quartz/public
-            sudo chmod -R 755 /var/www/quartz/public
+            chmod -R 775 /var/www/quartz/public
