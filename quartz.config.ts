@@ -8,7 +8,7 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "最终物语：破碎世界",
+    pageTitle: "破碎世界",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
@@ -25,7 +25,7 @@ const config: QuartzConfig = {
       typography: {
         header: "ZCOOL XiaoWei",
         body: "Noto Sans SC",
-        code: "IBM Plex Mono",
+        code: "monospace",
       },
       colors: {
         lightMode: {
@@ -88,7 +88,7 @@ const config: QuartzConfig = {
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
       // Comment out CustomOgImages to speed up build time
-      Plugin.CustomOgImages(),
+      // Plugin.CustomOgImages(),
     ],
   },
 }

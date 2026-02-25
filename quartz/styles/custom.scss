@@ -1,11 +1,28 @@
 @use "./base.scss";
 
+@font-face {
+  font-family: 'ZCOOL XiaoWei';
+  src: url('/static/fonts/ZCOOLXiaoWei-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans SC';
+  src: url('/static/fonts/NotoSansSC-VF.ttf') format('truetype-variations'); 
+  font-weight: 100 900; /* 声明支持 100 到 900 的所有粗细 */
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --fu-gold: #e2b349;
   --fu-accent: #8e24aa;
   --fu-border: #3d3d3d;
   --fu-bg-soft: rgba(0,0,0,0.03); 
   --fu-font-title: 'ZCOOL XiaoWei', serif;
+  --fu-font-body: 'Noto Sans SC', sans-serif; // 定义变量方便使用
 }
 
 // 1. 全局标题装饰
@@ -152,4 +169,223 @@ h1, h2, h3, h4 {
 
 .section-summary .meta {
   display: none;
+}
+
+// 7. 法术/技能块 (Spell Callout)
+.callout[data-callout="spell"] {
+  position: relative;
+  overflow: visible !important;
+  margin: 2rem 0 1.2rem 0 !important;
+  padding: 0.8rem 1.2rem !important;
+  border: 1px solid var(--fu-border) !important;
+  // 背景采用微弱的紫色调
+  background-color: rgba(142, 36, 170, 0.03) !important; 
+  border-radius: 0;
+  // 顶部粗边框改为紫色
+  border-top: 3px solid var(--fu-accent) !important;
+
+  .callout-title {
+    // 紫色渐变背景
+    background: linear-gradient(90deg, rgba(142, 36, 170, 0.15) 0%, transparent 100%);
+    margin: -0.8rem -1.2rem 0.8rem -1.2rem !important;
+    padding: 0.4rem 1.2rem !important;
+    border-bottom: 1px solid rgba(142, 36, 170, 0.2);
+    
+    .callout-icon { display: none; }
+    
+    .callout-title-inner {
+      font-family: var(--fu-font-title);
+      font-weight: bold;
+      color: var(--fu-accent); // 标题文字使用紫色
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px;
+
+      &::before {
+        content: "✧"; // 魔法风格的星芒
+        color: var(--fu-accent);
+        flex-shrink: 0;
+      }
+      p { display: inline !important; margin: 0 !important; }
+    }
+  }
+
+  .callout-content {
+    padding: 0 !important;
+    & > p:empty { display: none; }
+    white-space: pre-wrap !important;
+
+    // 法术块内的加粗文字（消耗、目标、持续）采用紫色基调
+    b, strong {
+      color: var(--fu-accent) !important;
+      background: rgba(142, 36, 170, 0.08) !important;
+      
+      // 核心修改：全边框替代下划线
+      border: 1px solid var(--fu-accent) !important; 
+      border-radius: 3px; // 轻微圆角增加精致感
+      
+      padding: 1px 5px !important;
+      margin: 0 2px;
+      font-size: 0.95em;
+      font-weight: 600;
+      
+      // 修正行高防止边框互相重叠
+      display: inline-block; 
+      line-height: 1.4;
+    }
+
+    p {
+      white-space: pre-wrap !important;
+      margin: 0.5rem 0 !important;
+    }
+  }
+}
+
+.content, .popover-hint {
+  img {
+    display: block;       // 强制转为块级元素
+    margin: 2rem auto;    // 上下留出 2rem 间距，左右自动平分（居中）
+    max-width: 100%;      // 防止图片超出容器宽度
+    height: auto;
+    
+    // 可选：呼应你的 RPG 风格
+    border: 1px solid var(--fu-border); 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); // 增加一点沉浸式的阴影
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.01); // 鼠标悬停微放大
+    }
+  }
+}
+
+
+// 9. RPG 属性与状态表格装饰
+.content table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  font-family: var(--fu-font-body);
+  // 外层顶部与底部装饰线
+  border-top: 2px solid var(--fu-gold);
+  border-bottom: 2px solid var(--fu-gold);
+  background-color: rgba(255, 255, 255, 0.02);
+  
+  // 表头样式
+  th {
+    font-family: var(--fu-font-title);
+    font-size: 0.95rem;
+    color: var(--fu-gold);
+    background-color: rgba(226, 179, 73, 0.1); // 极淡的金底
+    padding: 8px 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--fu-border);
+  }
+
+  // 单元格样式
+  td {
+    padding: 12px 4px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--darkgray);
+    
+    // 给数值添加等宽字体感（针对 d10, 47 等数字）
+    font-family: var(--fu-font-code);
+  }
+
+  // 这里的逻辑：针对特定属性名进行颜色修饰
+  // 比如：生命(HP) 变红，精神(MP) 变紫
+  th:contains("HP"), td:nth-child(2) { color: #ff5252; } // 假设HP在第二个单元格
+  th:contains("MP"), td:nth-child(3) { color: var(--fu-accent); } 
+}
+
+// 适配暗色模式下的文字对比度
+body[user-color-scheme="dark"] .content table td {
+  color: #eeeeee;
+}
+
+// 移动端优化：防止表格被挤压变形
+@media (max-width: 600px) {
+  .content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+// 10. 角色面板 UI (精简合并版)
+.callout[data-callout="character"] {
+  border: 2px solid var(--fu-border) !important;
+  background-color: var(--fu-bg-soft) !important;
+  padding: 0 !important; // 移除内边距，让表格撑满边框
+  margin: 2rem 0 !important;
+  overflow: hidden;
+
+  // --- 彻底移除标题行 ---
+  .callout-title {
+    display: none !important;
+  }
+
+  .callout-content {
+    padding: 0 !important;
+    
+    table {
+      width: 100% !important;
+      margin: 0 !important;
+      border: none !important;
+      border-collapse: collapse;
+      table-layout: fixed; // 等分列宽
+
+      // --- 奇数行/重行 (1 & 3): 标题与标签 ---
+      thead tr,
+      tbody tr:nth-child(2) {
+        // 动态背景：亮色模式下用深灰，暗色模式下用深黑
+        background-color: var(--dark) !important; 
+        
+        th, td {
+          color: var(--fu-gold) !important;
+          font-family: var(--fu-font-title);
+          font-size: 0.85rem;
+          padding: 6px 2px !important;
+          text-align: center;
+          border: none !important;
+          letter-spacing: 1px;
+        }
+      }
+
+      // --- 偶数行/轻行 (2 & 4): 数值展示 ---
+      tbody tr:nth-child(1),
+      tbody tr:nth-child(3) {
+        background-color: transparent !important;
+        
+        td {
+          padding: 12px 2px !important;
+          text-align: center;
+          font-family: var(--fu-font-code);
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: var(--darkgray);
+          border: none !important;
+          
+          // 数值内的强调加粗去掉边框背景（如果有全局冲突）
+          strong { background: none !important; border: none !important; padding: 0 !important; }
+        }
+      }
+
+      // --- 核心数值染色 (第四行) ---
+      tbody tr:nth-child(3) {
+        td:nth-child(2) { color: #d32f2f !important; } // HP 红色
+        td:nth-child(3) { color: var(--fu-accent) !important; } // MP 紫色
+      }
+    }
+  }
+}
+
+// 亮色模式特殊微调：让“重行”不那么死黑，带一点点透明度或调浅
+body[user-color-scheme="light"] .callout[data-callout="character"] {
+  thead tr, tbody tr:nth-child(2) {
+    background-color: #333333 !important; // 亮色模式下稍微柔和一点的深色
+  }
 }

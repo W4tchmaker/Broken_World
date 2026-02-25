@@ -8,7 +8,7 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [],
   footer: Component.Footer({
     links: {
-      "最终物语 Wiki": "https://your-site.com", // 替换为你的地址
+      "破碎世界": "https://www.w4tchamker.com", // 替换为你的地址
       "Discord": "https://discord.gg/cRFFHYye7t",
     },
   }),
