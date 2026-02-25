@@ -1,3 +1,151 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+:root {
+  --fu-gold: #e2b349;
+  --fu-accent: #8e24aa;
+  --fu-border: #3d3d3d;
+  --fu-bg-soft: rgba(0,0,0,0.03); 
+  --fu-font-title: 'ZCOOL XiaoWei', serif;
+}
+
+// 1. 全局标题装饰
+h1, h2, h3, h4 {
+  font-family: var(--fu-font-title);
+  color: var(--secondary);
+  position: relative;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--fu-gold);
+  &::before {
+    content: "◆";
+    color: var(--fu-gold);
+    margin-right: 8px;
+    font-size: 0.8em;
+  }
+}
+
+// 2. 嵌入块修复 (解决多行合并问题)
+.callout {
+  .internal-embed, 
+  blockquote.transclude {
+    display: contents !important; // 使容器消失但保留子元素块级结构
+    .transclude-src, .embed-link { display: none !important; }
+
+    & > p {
+      display: block !important; 
+      margin: 0.5rem 0 !important;
+      &:first-child { margin-top: 0 !important; }
+      &:last-child { margin-bottom: 0 !important; }
+    }
+  }
+}
+
+// 3. SL 标签样式
+%sl-badge {
+  position: absolute;
+  z-index: 100;
+  right: -8px;
+  top: -14px;
+  padding: 2px 12px;
+  font-family: 'monospace', sans-serif;
+  font-weight: 800;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: #fff;
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+  pointer-events: none;
+}
+
+// 4. 能力卡片布局 (修复标题星号换行)
+.callout[data-callout="ability"],
+.callout[data-callout="char-skill"] {
+  position: relative;
+  overflow: visible !important;
+  margin: 2rem 0 1.2rem 0 !important;
+  padding: 0.8rem 1.2rem !important;
+  border: 1px solid var(--fu-border) !important;
+  background-color: var(--fu-bg-soft) !important;
+  border-radius: 0;
+
+  .callout-title {
+    background: linear-gradient(90deg, rgba(226,179,73,0.2) 0%, transparent 100%);
+    margin: -0.8rem -1.2rem 0.8rem -1.2rem !important;
+    padding: 0.4rem 1.2rem !important;
+    border-bottom: 1px solid rgba(226,179,73,0.3);
+    
+    .callout-icon { display: none; }
+    
+    .callout-title-inner {
+      font-family: var(--fu-font-title);
+      font-weight: bold;
+      color: var(--secondary);
+      // 修复星号换行
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px;
+
+      &::before {
+        content: "✦";
+        color: var(--fu-gold);
+        flex-shrink: 0;
+      }
+      p { display: inline !important; margin: 0 !important; }
+    }
+  }
+
+  .callout-content {
+    padding: 0 !important;
+    & > p:empty { display: none; }
+    white-space: pre-wrap !important;
+
+    p {
+      white-space: pre-wrap !important;
+      margin: 0.5rem 0 !important;
+    }
+  }
+}
+
+.callout[data-callout="ability"] {
+  border-top: 3px solid var(--secondary) !important;
+  &::after { @extend %sl-badge; content: "MAX SL " attr(data-callout-metadata); background: var(--secondary); }
+}
+
+.callout[data-callout="char-skill"] {
+  border-top: 3px solid var(--fu-gold) !important;
+  &::after { @extend %sl-badge; content: "LEVEL " attr(data-callout-metadata); background: var(--fu-gold); color: #000; }
+}
+
+// 5. 文本装饰
+.callout-content b, 
+.callout-content strong {
+  color: var(--fu-gold);
+  background: rgba(226,179,73,0.1);
+  padding: 0 3px;
+  border-bottom: 1px solid var(--fu-gold);
+}
+
+.callout-content ul {
+  list-style: none;
+  padding-left: 1.2rem;
+  li::before { content: "◆"; color: var(--fu-gold); display: inline-block; width: 1.2rem; margin-left: -1.2rem; font-size: 0.7rem; }
+}
+
+// 6. 角色状态面板
+.callout[data-callout="character"] {
+  border: 2px solid var(--fu-border) !important;
+  background-color: #1a1a1b !important;
+  color: #eeeeee !important;
+  .callout-title {
+    background: var(--fu-border);
+    justify-content: center;
+    .callout-title-inner { color: var(--fu-gold); font-family: var(--fu-font-title); }
+  }
+  .callout-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    padding: 12px !important;
+    p { margin: 0; }
+    strong { color: var(--fu-gold); border: none; background: transparent; }
+  }
+}

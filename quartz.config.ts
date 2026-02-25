@@ -1,5 +1,6 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
+import { CalloutContentAnchor } from "./quartz/plugins/transformers/CalloutContentAnchor"
 
 /**
  * Quartz 4 Configuration
@@ -8,47 +9,45 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Quartz 4",
+    pageTitle: "最终物语：破碎世界",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
     analytics: {
       provider: "plausible",
     },
-    locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
+    locale: "zh-CN",
+    baseUrl: "www.w4tchmaker.com",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
+        header: "ZCOOL XiaoWei",
+        body: "Noto Sans SC",
         code: "IBM Plex Mono",
       },
       colors: {
         lightMode: {
-          light: "#faf8f8",
-          lightgray: "#e5e5e5",
-          gray: "#b8b8b8",
-          darkgray: "#4e4e4e",
-          dark: "#2b2b2b",
-          secondary: "#284b63",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#fff23688",
+          light: "#faf8f8",       // 页面背景
+          lightgray: "#e5e5e5",   // 边框
+          gray: "#b8b8b8",        // 关系图谱连线
+          darkgray: "#4e4e4e",    // 正文文字
+          dark: "#2b2b2b",        // 标题与图标
+          secondary: "#d32f2f",   // 链接颜色（推荐用符合 JRPG 的鲜艳红色或蓝色）
+          tertiary: "#84a59d",    // 悬停状态
+          highlight: "rgba(143, 159, 169, 0.15)", // 内部链接背景
         },
         darkMode: {
-          light: "#161618",
+          light: "#161617",
           lightgray: "#393639",
           gray: "#646464",
           darkgray: "#d4d4d4",
           dark: "#ebebec",
-          secondary: "#7b97aa",
+          secondary: "#ff5252",   // 暗色模式下的高亮红
           tertiary: "#84a59d",
           highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#b3aa0288",
         },
       },
     },
@@ -67,6 +66,8 @@ const config: QuartzConfig = {
         keepBackground: false,
       }),
       Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false }),
+
+      CalloutContentAnchor(),
       Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
