@@ -14,7 +14,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     locale: "zh-CN",
     baseUrl: "www.w4tchmaker.com",
-    ignorePatterns: ["private", "templates", ".obsidian", "模板", "测试"],
+    ignorePatterns: ["private", "templates", ".obsidian", "模板/*", "测试/*"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "local",
