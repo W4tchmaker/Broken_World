@@ -65,9 +65,10 @@ const config: QuartzConfig = {
 
       Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents(),
-      Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
+      Plugin.CrawlLinks({ markdownLinkResolution: "absolute" }),
       Plugin.Description(),
-      Plugin.LeafletMap()
+      Plugin.LeafletMap(),
+      Plugin.FantasyStatblocks()
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [

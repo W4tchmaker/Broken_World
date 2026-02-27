@@ -1,0 +1,202 @@
+{
+  "id": "fabula-ultima-cn",
+  "name": "Fabula Ultima (最终物语)",
+  "edited": false,
+  "version": 1,
+  "blocks": [
+    {
+      "type": "inline",
+      "id": "header-inline",
+      "properties": [],
+      "hasRule": true,
+      "nested": [
+        {
+          "type": "group",
+          "id": "header-group",
+          "properties": ["name", "level", "species"],
+          "nested": [
+            {
+              "type": "heading",
+              "id": "name-heading",
+              "properties": ["name"],
+              "conditioned": true,
+              "size": 1
+            },
+            {
+              "type": "subheading",
+              "id": "level-species-sub",
+              "properties": ["level", "species"],
+              "conditioned": true,
+              "separator": " ◆ "
+            }
+          ],
+          "conditioned": true
+        },
+        {
+          "type": "image",
+          "id": "monster-image",
+          "properties": ["image"]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "flavor-text",
+      "properties": ["description"],
+      "conditioned": true,
+      "text": null
+    },
+    {
+      "type": "property",
+      "id": "traits-prop",
+      "display": "典型特质",
+      "properties": ["typical_traits"],
+      "conditioned": true,
+      "hasRule": true
+    },
+    {
+      "type": "inline",
+      "id": "stats-row-1",
+      "properties": [],
+      "hasRule": false,
+      "nested": [
+        {
+          "type": "property",
+          "id": "dex-prop",
+          "display": "敏捷",
+          "properties": ["dex"],
+          "conditioned": true
+        },
+        {
+          "type": "property",
+          "id": "ins-prop",
+          "display": "洞察",
+          "properties": ["ins"],
+          "conditioned": true
+        },
+        {
+          "type": "property",
+          "id": "mig-prop",
+          "display": "力量",
+          "properties": ["mig"],
+          "conditioned": true
+        },
+        {
+          "type": "property",
+          "id": "wlp-prop",
+          "display": "意志",
+          "properties": ["wlp"],
+          "conditioned": true
+        }
+      ],
+      "conditioned": true
+    },
+    {
+      "type": "inline",
+      "id": "stats-row-2",
+      "properties": [],
+      "hasRule": true,
+      "nested": [
+        {
+          "type": "property",
+          "id": "hp-prop",
+          "display": "HP",
+          "properties": ["hp"],
+          "conditioned": true,
+          "callback": "let hp = monster.hp || 0; let crisis = monster.crisis || Math.floor(hp / 2); return `${hp} ◆ <span style='color:red'>${crisis}</span>`;"
+        },
+        {
+          "type": "property",
+          "id": "mp-prop",
+          "display": "MP",
+          "properties": ["mp"],
+          "conditioned": true,
+          "callback": "return `<span style='color:#00bfff'>${monster.mp}</span>`;"
+        },
+        {
+          "type": "property",
+          "id": "init-prop",
+          "display": "先攻",
+          "properties": ["initiative"],
+          "conditioned": true
+        }
+      ],
+      "conditioned": true
+    },
+    {
+      "type": "inline",
+      "id": "def-row",
+      "properties": [],
+      "hasRule": true,
+      "nested": [
+        {
+          "type": "property",
+          "id": "def-prop",
+          "display": "物防",
+          "properties": ["def"],
+          "conditioned": true
+        },
+        {
+          "type": "property",
+          "id": "mdef-prop",
+          "display": "魔防",
+          "properties": ["mdef"],
+          "conditioned": true
+        },
+        {
+          "type": "property",
+          "id": "vul-prop",
+          "display": "弱点",
+          "properties": ["vulnerable"],
+          "conditioned": true
+        },
+        {
+          "type": "property",
+          "id": "res-prop",
+          "display": "抗性",
+          "properties": ["resistant"],
+          "conditioned": true
+        },
+        {
+          "type": "property",
+          "id": "imm-prop",
+          "display": "免疫",
+          "properties": ["immune"],
+          "conditioned": true
+        },
+        {
+          "type": "property",
+          "id": "abs-prop",
+          "display": "吸收",
+          "properties": ["absorb"],
+          "conditioned": true
+        }
+      ],
+      "conditioned": true
+    },
+    {
+      "type": "traits",
+      "id": "basic-attacks",
+      "properties": ["basic_attacks"],
+      "heading": "基础攻击",
+      "conditioned": true,
+      "dice": false
+    },
+    {
+      "type": "traits",
+      "id": "spells-list",
+      "properties": ["spells"],
+      "heading": "魔法",
+      "conditioned": true,
+      "dice": false
+    },
+    {
+      "type": "traits",
+      "id": "special-rules",
+      "properties": ["special_rules"],
+      "heading": "特性规则",
+      "conditioned": true,
+      "dice": false
+    }
+  ]
+}
