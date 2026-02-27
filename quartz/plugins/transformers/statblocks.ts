@@ -19,15 +19,49 @@ export const FantasyStatblocks: QuartzTransformerPlugin = () => {
                   const hp = data.hp || 0;
                   const crisis = data.crisis || Math.floor(hp / 2);
 
+                  let imgSrc = "";
+                  if (data.image) {
+                    let rawImage = "";
+                    
+                    if (typeof data.image === "string") {
+                      rawImage = data.image; 
+                    } else if (Array.isArray(data.image)) {
+                      rawImage = String(data.image.flat(Infinity)[0] || "");
+                    } else {
+                      rawImage = String(data.image);
+                    }
+
+                    imgSrc = rawImage.replace(/^\[\[(.*?)\]\]$/, "$1").trim();
+                    
+                    if (imgSrc && !imgSrc.includes("/")) {
+                      imgSrc = `/附件/${imgSrc}`; 
+                    } else if (imgSrc && !imgSrc.startsWith("/") && !imgSrc.startsWith("http")) {
+                      imgSrc = `/${imgSrc}`;
+                    }
+                  }
+
                   // 构建最终物语专属的 HTML 结构
                   const html = `
 <div class="statblock statblock-content-container">
   <div class="statblock-content">
     <div class="column">
-      <div class="heading">
-        <h1 class="statblock-heading">${data.name || "未命名"}</h1>
+      
+      <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.5rem;">
+
+        <div style="flex-grow: 1;">
+          <div class="heading">
+            <h1 class="statblock-heading">${data.name || "未命名"}</h1>
+          </div>
+          <p class="subheading">${data.level || ""} ◆ ${data.species || ""}</p>
+        </div>
+
+        ${imgSrc ? `
+        <div style="flex-shrink: 0;">
+          <img src="${imgSrc}" width="auto" height="auto" style="max-width: 80px; max-height: 80px; object-fit: cover; border: 2px solid var(--statblock-primary-color); border-radius: 4px;margin: 0;" alt="">
+        </div>
+        ` : ""}
+        
       </div>
-      <p class="subheading">${data.level || ""} ◆ ${data.species || ""}</p>
       <div class="tapered-rule"></div>
 
       ${data.description ? `<p class="line">${data.description}</p>` : ""}
@@ -58,9 +92,9 @@ export const FantasyStatblocks: QuartzTransformerPlugin = () => {
       </div>
       <div class="tapered-rule"></div>
 
-      ${renderTraitsList("攻击", data.basic_attacks)}
+      ${renderTraitsList("基础攻击", data.basic_attacks)}
       ${renderTraitsList("魔法", data.spells)}
-      ${renderTraitsList("特性", data.special_rules)}
+      ${renderTraitsList("特性规则", data.special_rules)}
 
     </div>
   </div>

@@ -39,7 +39,7 @@ export const defaultContentPageLayout: PageLayout = {
       ],
     }),
     Component.Explorer({
-      title: "大地图导航", // 侧边栏标题
+      title: "导航", // 侧边栏标题
       folderClickBehavior: "collapse", // 点击文件夹时折叠/展开，而不是跳转
       folderDefaultState: "collapsed", // 默认折叠，保持界面清爽
     }),
@@ -54,7 +54,9 @@ export const defaultContentPageLayout: PageLayout = {
 // 文件夹列表页面的布局（ListPage）
 export const defaultListPageLayout: PageLayout = {
   beforeBody: [
-    Component.Breadcrumbs(), 
+    Component.Breadcrumbs({
+      rootName: "主页",
+    }), 
     Component.ArticleTitle(), 
     // Component.ContentMeta() // <--- 已移除：不再显示日期和阅读时间
   ],
