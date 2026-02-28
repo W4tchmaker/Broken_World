@@ -1,0 +1,123 @@
+/* =========================================
+   FV Trait Card Styles (能力卡片专属样式)
+   ========================================= */
+
+// --- 颜色变量 (基于你的截图提取) ---
+$trait-gold: #e2b764;       // 强调色：暗金色 (用于顶部边框、角标、下划线)
+$trait-blue: #4a88e8;       // 标题色：柔和的蓝色
+$trait-bg: #f9f9f9;         // 卡片背景：浅灰白
+$trait-border: #888888;     // 外边框：深灰色
+$trait-line: #e0e0e0;       // 内部分割线：浅灰色
+$trait-text: #2c2c2c;       // 正文颜色
+$trait-text-light: #777777; // 次要文本颜色 (如职业名)
+
+:root {
+  --fu-font-title: 'ZCOOL XiaoWei', serif;
+  --fu-font-body: 'Noto Sans SC', sans-serif; // 定义变量方便使用
+}
+
+// --- 卡片主容器 ---
+.fv-trait-card {
+  position: relative;
+  background-color: $trait-bg;
+  border: 1px solid $trait-border;
+  border-top: 3px solid $trait-gold; /* 截图顶部标志性的金色粗边框 */
+  margin: 2rem 0 1rem 0; /* 顶部留出足够空间给角标 */
+  border-radius: 2px;
+  font-family: inherit;
+  box-sizing: border-box;
+
+  // --- 右上角等级角标 ---
+  .fv-trait-badge {
+    position: absolute;
+    top: -14px;  /* 向上溢出卡片边缘 */
+    right: -1px; /* 贴紧右侧边框 */
+    background-color: $trait-gold;
+    color: #000000;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 3px 12px 3px 20px;
+    /* 使用 clip-path 切出左侧斜边，右侧保持平直 */
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
+    letter-spacing: 0.5px;
+    z-index: 1;
+  }
+
+  // --- 头部区域 ---
+  .fv-trait-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid $trait-gold; /* 标题与正文之间的金色细分割线 */
+
+    .fv-trait-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* 标题左侧的菱形点缀 (截图中是四角星，这里用旋转的正方形模拟最轻量) */
+    .fv-trait-icon {
+      width: 8px;
+      height: 8px;
+      background-color: $trait-gold;
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .fv-trait-title {
+      color: $trait-blue;
+      font-family: var(--fu-font-title);
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    /* 职业名称 (排在标题下方) */
+    .fv-trait-class {
+      font-size: 0.85rem;
+      color: $trait-text-light;
+      margin-top: 4px;
+      margin-left: 18px; /* 与上方的标题文字左侧对齐 (8px图标 + 10px间距) */
+    }
+  }
+
+  // --- 描述正文区域 ---
+  .fv-trait-body {
+    padding: 16px;
+    color: $trait-text;
+    font-size: 0.95rem;
+    line-height: 1.6;
+
+    p {
+      margin-top: 0;
+      margin-bottom: 0.8em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    /* 复刻截图中的关键字下划线强调效果 */
+    /* 建议在你的 descHtml 中，把需要强调的词用 <strong> 或 <b> 包裹 */
+    strong, b {
+      font-weight: bold;
+      border-bottom: 2px solid $trait-gold;
+      padding-bottom: 1px;
+      color: inherit;
+    }
+  }
+
+  // 1. 下面有同类时（当前卡片是上半部分）：去除下边界、下边框、下圆角
+  &:has(+ .fv-trait-card) {
+    margin-bottom: 0;
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  // 2. 上面有同类时（当前卡片是下半部分）：去除上边界、上边框、上圆角
+  & + & {
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}

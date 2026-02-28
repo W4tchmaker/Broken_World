@@ -14,7 +14,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     locale: "zh-CN",
     baseUrl: "www.w4tchmaker.com",
-    ignorePatterns: ["private", "templates", ".obsidian", "模板/*", "测试/*"],
+    ignorePatterns: ["private", "templates", ".obsidian", "模板/*", "测试/*", "草稿/*"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "local",
@@ -68,7 +68,8 @@ const config: QuartzConfig = {
       Plugin.CrawlLinks({ markdownLinkResolution: "absolute" }),
       Plugin.Description(),
       Plugin.LeafletMap(),
-      Plugin.FantasyStatblocks()
+      Plugin.FantasyStatblocks(),
+      Plugin.FinalTaleBlocks()
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [
