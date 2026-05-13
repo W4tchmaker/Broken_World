@@ -27,7 +27,7 @@ jobs:
         run: npx quartz build
 
       - name: Sync to Server via rsync
-        uses: Burnett01/rsync-deployments@8.0.4
+        uses: Burnett01/rsync-deployments@8.0.5
         with:
           switches: -avzr --delete  # -a 归档模式, -v 详细, -z 压缩, -r 递归, --delete 删除目标目录中多余文件
           path: public/
